@@ -10,9 +10,24 @@ void waitforclap()
 	{
 		motor[A]=0;
 		wait1Msec(10);
-		clearTimer(timer1);
 	}
 }
+
+void claptimer()
+{
+	if(getTimerValue(timer1)<1000)
+	{
+		displayBigTextLine(3, "var: %d", getTimerValue(timer1));
+		clapcount=clapcount+2;
+	}
+	clearTimer(timer1);
+		if(clapcount>4)
+		{
+			clapcount=0;
+		}
+
+}
+
 void flipswitch()
 {
 	while(SensorValue(sound)>=50)
@@ -30,26 +45,19 @@ void flipswitch()
 				motor[A]=-25;
 				wait1Msec(1000);
 			}
-
 }
 task main()
 {
 	while(true)
 	{
-	displayBigTextLine(4, "var: %d", clapcount);
+	displayBigTextLine(8, "var: %d", clapcount);
+
 		waitforclap();
-		if(getTimerValue(timer1)>1000)
-		{
-		}
-			else
-			{
-				clapcount=clapcount+1;
-			}
-				if(clapcount>4)
-				{
-					clapcount=1;
-				}
-					flipswitch();
+
+		claptimer();
+
+		flipswitch();
+
 	}
 
 
